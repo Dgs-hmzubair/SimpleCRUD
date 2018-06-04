@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<body ng-controller="myCtrl">
+
+
+    <div>
+        
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>RollNumber</th>
+                    <th>NIC</th>
+                    <th>Options</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in info">
+                  <td>{{ x.name }}</td>
+                  <td>{{ x.rollNum }}</td>
+                  <td>{{ x.nic }}</td>
+                  <td>
+                      <a href="#" ng-click="del(x.name)">Delete</a> |
+                      <a href="#" ng-click="edit(x.name)">Edit</a>
+                  </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tr>
+                <td>Name</td>
+                <td><input type="text" ng-model="name"></td>
+            </tr>
+            <tr>
+                <td>RollNumber</td>
+                <td><input type="text" ng-model="rollNum"></td>
+            </tr>
+            <tr>
+                <td>NIC</td>
+                <td><input type="text" ng-model="nic"></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <input type="button" value="Add" ng-click="add()">
+                    <input type="button" value="Save" ng-click="save()">
+                </td>
+                
+            </tr>
+
+        </table>
+    </div>
+            
+
+    <script>
+        var app = angular.module("myApp", []);
+        app.controller("myCtrl",function($scope){
+        $scope.info = [
+        {name : 'Hafiz', rollNum:'1234', nic:'321'},
+        {name : 'Muhammad', rollNum:'123', nic:'21'},
+        {name : 'Zubair', rollNum:'134', nic:'31'},
+        {name : 'Hasan', rollNum:'234', nic:'32'}
+        ]
+
+        $scope.add = function(){
+            $scope.info.push({name : $scope.name, rollNum:$scope.rollNum, nic:$scope.nic});
+            $scope.name = '';
+            $scope.rollNum ='';
+            $scope.nic = '';
+
+        };
+
+        $scope.save = function(){
+            var index = getIndex($scope.name);
+            $scope.info[index].name = $scope.name;
+            $scope.info[index].rollNum = $scope.rollNum;
+            $scope.info[index].nic = $scope.nic;
+            
+
+
+
+        };
+
+        $scope.edit = function(name){
+            var index = getIndex(name);
+            var information = $scope.info[index];
+            $scope.name = information.name;
+            $scope.rollNum = information.rollNum;
+            $scope.nic = information.nic;
+
+        };
+        $scope.del = function(name){
+
+            var index = getIndex(name);
+            $scope.info.splice(index,1);
+
+        };
+        function getIndex(name){
+            for(var i = 0; i < $scope.info.length ; i++){
+                if($scope.info[i].name == name)
+                    return i;
+            }
+            return -1;
+
+            
+        }
+       
+    });
+    </script>
+</body>
+</html>
